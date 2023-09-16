@@ -2,7 +2,7 @@ from flask import Flask, make_response, jsonify, request
 import os
 import mysql.connector
 
-conexao = mysql.connector.connect(host="localhost", database="PythonSQL", user="root", password="123456")
+conexao = mysql.connector.connect(host="localhost", database="desafioStemis", user="root", password="123456")
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False 
@@ -11,16 +11,18 @@ app.config['JSON_SORT_KEYS'] = False
 def get_produtos():
     cursor = conexao.cursor()
     cursor.execute("SELECT * FROM produtos")
-    listaprodutos = cursor.fetchall()
+    tuplasprodutos = cursor.fetchall()
 
     listaprodutos = list()
-    for produto in listaprodutos:
-        listaprodutos = {
-            "id do produto": produto[0],
-            "nome": produto[1],
-            "valor": produto[2],
-            "quantidade em estoque": produto[3]
-        }
+    for produto in tuplasprodutos:
+        listaprodutos.append(
+            {
+                "id do produto": produto[0],
+                "nome": produto[1],
+                "valor": produto[2],
+                "quantidade em estoque": produto[3]
+            }
+        )
 
     return make_response(
         jsonify(
@@ -55,7 +57,7 @@ def create_produto():
     novoproduto = request.json
 
     cursor = conexao.cursor()
-    sql = f"INSERT INTO produtos(nome, valor, quantidade) VALUES ('{novoproduto['nome']}', {novoproduto['valor']}, {novoproduto['quantidade']})"
+    sql = f"INSERT INTO produtos(nome, valor, quantidade) VALUES ('{novoproduto['nome']}', {novoproduto['valor']}, {novoproduto['quantidade em estoque']})"
     cursor.execute(sql)
     conexao.commit()
 
@@ -64,6 +66,8 @@ def create_produto():
             mensagem = "Produto cadastrado com sucesso"
         )
     )
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=os.getenv("PORT", default=5000))
