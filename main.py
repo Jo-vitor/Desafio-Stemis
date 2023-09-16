@@ -50,6 +50,20 @@ def get_produto(id):
         )
     )
 
+@app.route("/produto", methods = ["POST"])
+def create_produto():
+    novoproduto = request.json
+
+    cursor = conexao.cursor()
+    sql = f"INSERT INTO produtos(nome, valor, quantidade) VALUES ('{novoproduto['nome']}', {novoproduto['valor']}, {novoproduto['quantidade']})"
+    cursor.execute(sql)
+    conexao.commit()
+
+    return make_response(
+        jsonify(
+            mensagem = "Produto cadastrado com sucesso"
+        )
+    )
 
 if __name__ == '__main__':
     app.run(debug=True, port=os.getenv("PORT", default=5000))
