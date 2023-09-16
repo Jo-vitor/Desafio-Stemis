@@ -1,12 +1,54 @@
-from flask import Flask, jsonify
+from flask import Flask, make_response, jsonify, request
 import os
+import mysql.connector
+
+conexao = mysql.connector.connect(host="localhost", database="PythonSQL", user="root", password="123456")
 
 app = Flask(__name__)
+app.config['JSON_SORT_KEYS'] = False 
 
+@app.route("/produtos", methods = ["GET"])
+def get_produtos():
+    cursor = conexao.cursor()
+    cursor.execute("SELECT * FROM produtos")
+    listaprodutos = cursor.fetchall()
 
-@app.route('/')
-def index():
-    return jsonify({"Choo Choo": "Welcome to your Flask app 🚅"})
+    listaprodutos = list()
+    for produto in listaprodutos:
+        listaprodutos = {
+            "id do produto": produto[0],
+            "nome": produto[1],
+            "valor": produto[2],
+            "quantidade em estoque": produto[3]
+        }
+
+    return make_response(
+        jsonify(
+            mensagem = "Lista dos produtos em estoque",
+            produtos = listaprodutos 
+        )
+    )
+
+@app.route("/produto/<id>", methods = ["GET"])
+def get_produto(id):
+    cursor = conexao.cursor()
+    sql = f"SELECT * FROM produtos WHERE id_produto = {id}"
+    cursor.execute(sql)
+    pegaproduto = cursor.fetchone()
+
+    umproduto = {
+        "id do produto": pegaproduto[0],
+        "nome": pegaproduto[1],
+        "valor": pegaproduto[2],
+        "quantidade em estoque": pegaproduto[3]
+    }
+
+    return make_response(
+        jsonify(
+            mensagem = "Produto selecionado",
+            produto = umproduto
+        )
+    )
 
 
 if __name__ == '__main__':
