@@ -82,5 +82,18 @@ def update_produto(id):
         )
     )
 
+@app.route("/produto/<id>", methods = ["DELETE"])
+def delete_produto(id):
+    cursor = conexao.cursor()
+    sql = f"DELETE FROM produtos WHERE id_produto = {id}"
+    cursor.execute(sql)
+    conexao.commit()
+
+    return make_response(
+        jsonify(
+            mensagem = "Poduto deletado"
+        )
+    )
+
 if __name__ == '__main__':
     app.run(debug=True, port=os.getenv("PORT", default=5000))
