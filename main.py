@@ -67,7 +67,20 @@ def create_produto():
         )
     )
 
+@app.route("/produto/<id>", methods = ["PUT"])
+def update_produto(id):
+    atualizaestoque = request.json
 
+    cursor = conexao.cursor()
+    sql = f"UPDATE produtos SET quantidade = {atualizaestoque['quantidade em estoque']} WHERE id_produto = {id}"
+    cursor.execute(sql)
+    conexao.commit()
+
+    return make_response(
+        jsonify(
+            mensagem = "Produto atulizado com sucesso"
+        )
+    )
 
 if __name__ == '__main__':
     app.run(debug=True, port=os.getenv("PORT", default=5000))
