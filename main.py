@@ -31,7 +31,7 @@ def get_produtos():
         )
     )
 
-@app.route("/produto/<id>", methods = ["GET"])
+@app.route("/produtos/<id>", methods = ["GET"])
 def get_produto(id):
     cursor = conexao.cursor()
     sql = f"SELECT * FROM produtos WHERE id_produto = {id}"
@@ -52,7 +52,7 @@ def get_produto(id):
         )
     )
 
-@app.route("/produto", methods = ["POST"])
+@app.route("/produtos", methods = ["POST"])
 def create_produto():
     novoproduto = request.json
 
@@ -67,7 +67,7 @@ def create_produto():
         )
     )
 
-@app.route("/produto/<id>", methods = ["PUT"])
+@app.route("/produtos/<id>", methods = ["PUT"])
 def update_produto(id):
     atualizaestoque = request.json
 
@@ -82,7 +82,7 @@ def update_produto(id):
         )
     )
 
-@app.route("/produto/<id>", methods = ["DELETE"])
+@app.route("/produtos/<id>", methods = ["DELETE"])
 def delete_produto(id):
     cursor = conexao.cursor()
     sql = f"DELETE FROM produtos WHERE id_produto = {id}"

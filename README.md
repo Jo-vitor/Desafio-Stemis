@@ -1,23 +1,13 @@
----
-title: Flask
-description: A popular minimal server framework for Python
-tags:
-  - python
-  - flask
----
+# API Endpoints
 
-# Python Flask Example
+A API oferece os seguintes endpoints:
 
-This is a [Flask](https://flask.palletsprojects.com/en/1.1.x/) app that serves a simple JSON response.
+GET /produtos - Retorna a lista de todos os produtos
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/zUcpux)
+GET /produtos/<id> - Retorna um produto especifico pelo seu id
 
-## ✨ Features
+POST /produtos - Cadastra um novo produto 
 
-- Python
-- Flask
+PUT /produtos/<id> - Atualiza a quantidade em estoque de um produto pelo seu id
 
-## 💁‍♀️ How to use
-
-- Install Python requirements `pip install -r requirements.txt`
-- Start the server for development `python3 main.py`
+DELETE /produtos/<id> - Deleta um produto pelo seu id
