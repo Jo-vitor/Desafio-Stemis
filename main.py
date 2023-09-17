@@ -2,7 +2,7 @@ from flask import Flask, make_response, jsonify, request
 import os
 import mysql.connector
 
-conexao = mysql.connector.connect(host="localhost", database="desafioStemis", user="root", password="123456")
+conexao = mysql.connector.connect(host=os.getenv("MYSQLHOST", default='localhost'), database=os.getenv("MYSQLDATABASE", default='desafioStemis'), user=os.getenv("MYSQLUSER", default='root'), password=os.getenv("MYSQLPASSWORD", default='123456'))
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False 
@@ -96,4 +96,4 @@ def delete_produto(id):
     )
 
 if __name__ == '__main__':
-    app.run(debug=True, port=os.getenv("PORT", default=5000))
+    app.run(debug=True, port=os.getenv("MYSQLPORT", default=5000))
